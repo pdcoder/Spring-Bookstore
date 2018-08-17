@@ -1,8 +1,11 @@
 package com.example.demo.domain;
 
+import com.example.demo.domain.security.UserRole;
 import com.sun.javafx.beans.IDProperty;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by prakashdas on 17/08/18.
@@ -18,10 +21,14 @@ public class User {
     private String password;
     private String firstname;
     private String lastname;
+
+
     @Column(name="id", nullable = false,updatable = false)
     private String email;
     private String phone;
     private boolean enabled = true;
+
+    private Set<UserRole> userRoles = new HashSet<>();
 
     public Long getId() {
         return id;
