@@ -1,4 +1,4 @@
-package com.example.demo.domain.authority;
+package com.example.demo.domain.security;
 
 /**
  * Created by prakashdas on 17/08/18.
