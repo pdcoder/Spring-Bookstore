@@ -11,10 +11,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.jws.WebParam;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Locale;
 
 /**
@@ -48,6 +51,19 @@ public class HomeController {
     public String forgetPassword(Locale locale, @RequestParam("token") String token, Model model)
     {
         model.addAttribute("classActiveForgetPassword",true);
+        return "myAccount";
+    }
+
+    @RequestMapping(value = "/newUser", method = RequestMethod.POST)
+    public String newUserPost(
+        HttpServletRequest request, @ModelAttribute("email") String userEmail, @ModelAttribute("username") String username, Model model) throws Exception{
+        model.addAttribute("classActiveNewAccount",true);
+        model.addAttribute("email",userEmail);
+        model.addAttribute("username",username);
+
+        if(userService.findByUsername(username)!=null){
+            model.addAttribute("usernameExists",true);
+        }
         return "myAccount";
     }
 
