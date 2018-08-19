@@ -21,6 +21,9 @@ public class UserServiceImpl  implements UserService{
 private PasswordResetTokenRepository passwordResetTokenRepository;
 
 @Autowired
+private JavaMailSender mailSender;
+
+@Autowired
 private RoleRepository roleRepository;
 
 @Autowired

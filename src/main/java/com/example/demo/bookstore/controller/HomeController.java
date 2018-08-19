@@ -4,6 +4,7 @@ import com.example.demo.domain.User;
 import com.example.demo.domain.security.PasswordResetToken;
 import com.example.demo.domain.security.Role;
 import com.example.demo.domain.security.UserRole;
+import com.example.demo.service.BookService;
 import com.example.demo.service.UserService;
 import com.example.demo.service.impl.UserSecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +21,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.jws.WebParam;
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Set;
+import java.awt.print.Book;
+import java.util.*;
 
 /**
  * Created by prakashdas on 16/08/18.
@@ -37,6 +37,8 @@ public class HomeController {
     @Autowired
     private UserSecurityService userSecurityService;
 
+    @Autowired
+    private BookService bookService;
 
     @RequestMapping("/")
     public String index()
@@ -44,6 +46,13 @@ public class HomeController {
         return "index";
     }
 
+    @RequestMapping("/bookshelf")
+    public String bookshelf(Model model)
+    {
+        List<Book> bookList = bookService.findAll();
+        model.addAttribute("bookList",bookList);
+        return "bookshelf";
+    }
     @RequestMapping("/login")
     public String login(Model model)
     {
@@ -88,6 +97,15 @@ public class HomeController {
         Set<UserRole> userRoles = new HashSet<>();
         userRoles.add(new UserRole(user,role));
         userService.createUser(user,userRoles);
+
+        String token = UUID.randomUUID().toString();
+        userService.createPasswordResetTokenForUser(user,token);
+
+        String appUrl = "http://"+request.getServerName()+":"+request.getServerPort()+request.getContextPath();
+        SimpleMailMessage email = mailConstructor.constructResetTokenEmail(appUrl,request.getLocale());
+        mailSender.send(email);
+        model.addAttribute("emailSent","true");
+        return "myAccount";
     }
 
     @RequestMapping("/newUser")
