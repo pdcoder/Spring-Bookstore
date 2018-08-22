@@ -34,9 +34,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private static final String[] PUBLIC_MATCHES ={
             "/css/**",
             "/js/**",
-            "/image",
+            "/image/**",
             "/",
-            "/myAccount"
+            "/myAccount",
+            "newUser",
+            "/forgetPassword",
+            "/login",
+            "/fonts/**",
+            "/bookshelf",
+            "/bookDetail/**",
+            "/hours",
+            "/faq",
+            "searchByCategory",
+            "/searchBook"
     };
 
     @Override
